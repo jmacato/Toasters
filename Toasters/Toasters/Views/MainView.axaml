@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Toasters.ViewModels"
+             xmlns:behaviors="clr-namespace:Toasters.Behaviors"
+             mc:Ignorable="d" d:DesignWidth="512" d:DesignHeight="342"
+             x:Class="Toasters.Views.MainView"
+             Foreground="White"
+             RenderOptions.BitmapInterpolationMode="LowQuality"
+             x:CompileBindings="True" x:DataType="viewModels:MainViewModel"
+             Background="Black">
+    <Interaction.Behaviors>
+        <behaviors:BoundsBehavior TargetViewModel="{Binding .}"/>
+    </Interaction.Behaviors>
+    <Design.DataContext>
+    <viewModels:MainViewModel />
+  </Design.DataContext>
+    <Panel>
+        <Panel.Styles>
+            <Style Selector="Image.WingLow1">
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-002.png"/>
+            </Style>
+            <Style Selector="Image.WingLow2">
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-004.png"/>
+            </Style>
+            <Style Selector="Image.WingHigh1">
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-001.png"/>
+            </Style>
+            <Style Selector="Image.WingHigh2">
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-003.png"/>
+            </Style>
+            <Style Selector="Image.Toast">
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-005.png"/>
+            </Style>
+            
+        </Panel.Styles>
+         
+        <ItemsControl Items="{Binding Toasters}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerTheme>
+                <ControlTheme TargetType="{x:Type ContentPresenter}" x:DataType="viewModels:FlyingObjectsViewModel">
+                    <Setter Property="Canvas.Left" Value="{Binding Position.X}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Position.Y}"></Setter>
+                    <Setter Property="Width" Value="{Binding Size.Width}"></Setter>
+                    <Setter Property="Height" Value="{Binding Size.Height}"></Setter>
+                </ControlTheme>
+            </ItemsControl.ItemContainerTheme>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="viewModels:ToasterViewModel">
+                    <Image>
+                        <Interaction.Behaviors><behaviors:ToasterFrameBehavior TargetViewModel="{Binding .}"/></Interaction.Behaviors>
+                    </Image>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </Panel>
+</UserControl>
