@@ -8,7 +8,7 @@ namespace Toasters.ViewModels;
 
 public abstract partial class FlyingObjectsViewModel : RectangleViewModel, IDisposable
 {
-    private IDisposable _disposable;
+    private readonly IDisposable _disposable;
 
     public enum FlyingObjectState
     {
@@ -31,7 +31,7 @@ public abstract partial class FlyingObjectsViewModel : RectangleViewModel, IDisp
     {
         Tree = tree;
         Tree.Insert(this);
-       // _disposable = Observable.Interval(interval).ObserveOn(AvaloniaScheduler.Instance).Subscribe(_ => Tick());
+        _disposable = Observable.Interval(interval).ObserveOn(AvaloniaScheduler.Instance).Subscribe(_ => Tick());
     }
 
     public void Dispose()

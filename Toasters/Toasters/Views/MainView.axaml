@@ -52,15 +52,12 @@
             </ItemsControl.ItemContainerTheme>
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="viewModels:FlyingObjectsViewModel">
-                    <Border BorderBrush="Red" BorderThickness="1">
-                        
-                        <Image>
+                         <Image>
                             <Interaction.Behaviors>
                                 <behaviors:FlyingObjectFrameBehavior TargetViewModel="{Binding .}"/>
                             </Interaction.Behaviors>
                         </Image>
-                    </Border>
-                </DataTemplate>
+                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 

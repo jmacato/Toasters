@@ -9,7 +9,7 @@ namespace Toasters.Utils;
 
 public static class PropertyChangedExtensions
 {
-    class PropertyObservable<T> : IObservable<T>
+    private class PropertyObservable<T> : IObservable<T>
     {
         private readonly INotifyPropertyChanged _target;
         private readonly PropertyInfo _info;
@@ -20,7 +20,7 @@ public static class PropertyChangedExtensions
             _info = info;
         }
 
-        class Subscription : IDisposable
+        private class Subscription : IDisposable
         {
             private readonly INotifyPropertyChanged _target;
             private readonly PropertyInfo _info;

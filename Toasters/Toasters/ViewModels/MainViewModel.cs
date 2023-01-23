@@ -32,7 +32,7 @@ namespace Toasters.ViewModels
                 FlyingObjects.Clear();
                 Tree.Clear();
 
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < 50; i++)
                 {
                     var attempts = 10;
                     do
@@ -50,7 +50,7 @@ namespace Toasters.ViewModels
                 }
 
 
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < 20; i++)
                 {
                     var attempts = 10;
                     do

@@ -40,8 +40,8 @@ public partial class RectangleViewModel : ViewModelBase, IEquatable<RectangleVie
     /// <summary>
     /// Creates a new <see cref='RectangleViewModel'/> with the specified location and size.
     /// </summary>
-    public static RectangleViewModel FromLTRB(float left, float top, float right, float bottom) =>
-        new RectangleViewModel(left, top, right - left, bottom - top);
+    public static RectangleViewModel FromLtrb(float left, float top, float right, float bottom) =>
+        new(left, top, right - left, bottom - top);
 
     /// <summary>
     /// Gets or sets the coordinates of the upper-left corner of the rectangular region represented by this
