@@ -12,15 +12,16 @@ using Toasters.ViewModels;
 
 namespace Toasters.Behaviors;
 
-public abstract class ViewModelBehaviors<TViewModel, TControl> : DisposingBehavior<TControl> 
-    where TControl : class, IAvaloniaObject 
+public abstract class ViewModelBehaviors<TViewModel, TControl> : DisposingBehavior<TControl>
+    where TControl : class, IAvaloniaObject
     where TViewModel : ViewModelBase
 {
     private TViewModel? _targetViewModel;
 
-    public static readonly DirectProperty<ViewModelBehaviors<TViewModel, TControl>, TViewModel?> TargetViewModelProperty =
-        AvaloniaProperty.RegisterDirect<ViewModelBehaviors<TViewModel, TControl>, TViewModel?>(
-            "TargetViewModel", o => o.TargetViewModel, (o, v) => o.TargetViewModel = v);
+    public static readonly DirectProperty<ViewModelBehaviors<TViewModel, TControl>, TViewModel?>
+        TargetViewModelProperty =
+            AvaloniaProperty.RegisterDirect<ViewModelBehaviors<TViewModel, TControl>, TViewModel?>(
+                "TargetViewModel", o => o.TargetViewModel, (o, v) => o.TargetViewModel = v);
 
     public TViewModel? TargetViewModel
     {
@@ -43,7 +44,7 @@ public class BoundsBehavior : ViewModelBehaviors<MainViewModel, UserControl>
     }
 }
 
-public class ToasterFrameBehavior : ViewModelBehaviors<ToasterViewModel, Image>
+public class FlyingObjectFrameBehavior : ViewModelBehaviors<FlyingObjectsViewModel, Image>
 {
     protected override void OnAttached(CompositeDisposable disposables)
     {
@@ -54,16 +55,8 @@ public class ToasterFrameBehavior : ViewModelBehaviors<ToasterViewModel, Image>
 
                 x.WhenAnyValue(z => z.State).Subscribe(y =>
                 {
-                    switch (y)
-                    {
-                        case ToasterViewModel.ToasterState.WingLow1:
-                        case ToasterViewModel.ToasterState.WingLow2:
-                        case ToasterViewModel.ToasterState.WingHigh1:
-                        case ToasterViewModel.ToasterState.WingHigh2:
-                            AssociatedObject.Classes.Clear();
-                            AssociatedObject.Classes.Add(x.State.ToString());
-                            break;
-                    }
+                    AssociatedObject.Classes.Clear();
+                    AssociatedObject.Classes.Add(x.State.ToString());
                 }).DisposeWith(disposables);
             }).DisposeWith(disposables);
     }

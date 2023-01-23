@@ -11,39 +11,63 @@ namespace Toasters.ViewModels
     public partial class MainViewModel : ViewModelBase
     {
         [ObservableProperty] private Size _viewBounds;
-        
-        public Quadtree Tree { get;  } = new  ();
-        public ObservableCollection<ToasterViewModel> Toasters { get; } = new ();
+
+        public QuadTree Tree { get; private set; }
+        public ObservableCollection<FlyingObjectsViewModel> FlyingObjects { get; } = new();
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewBounds))
             {
+                if(ViewBounds.Width == 0 || ViewBounds.Height == 0) return;
                 
-                foreach (var toaster in Toasters)
+                Tree = new QuadTree(new RectangleViewModel(0, 0, ViewBounds.Width,
+                    ViewBounds.Height));
+
+                foreach (var flyingObject in FlyingObjects)
                 {
-                    toaster.Dispose();
+                    flyingObject.Dispose();
                 }
-                Toasters.Clear();
+
+                FlyingObjects.Clear();
                 Tree.Clear();
-                
-                for (int i = 0; i < 10; i++)
+
+                for (var i = 0; i < 10; i++)
                 {
                     var attempts = 10;
                     do
                     {
-                        var randomRect = new RectangleViewModel(Vector.Random(ViewBounds.Width, ViewBounds.Height) , new Size(64, 64));
-                        if (Tree.Retrieve(randomRect).Count == 0)
+                        var randomRect = new RectangleViewModel(Vector.Random(ViewBounds.Width, ViewBounds.Height),
+                            new Size(64, 64));
+                        if (!Tree.Query(randomRect).Any())
                         {
-                            Toasters.Add(new ToasterViewModel(this, randomRect.Position));
+                            FlyingObjects.Add(new ToasterViewModel(this, randomRect.Location));
                             break;
                         }
+
                         attempts--;
                     } while (attempts > 0);
                 }
 
+
+                for (var i = 0; i < 5; i++)
+                {
+                    var attempts = 10;
+                    do
+                    {
+                        var randomRect = new RectangleViewModel(Vector.Random(ViewBounds.Width, ViewBounds.Height),
+                            new Size(64, 64));
+                        if (!Tree.Query(randomRect).Any())
+                        {
+                            FlyingObjects.Add(new BreadViewModel(this, randomRect.Location));
+                            break;
+                        }
+
+                        attempts--;
+                    } while (attempts > 0);
+                }
             }
-            
+
             base.OnPropertyChanged(e);
         }
     }

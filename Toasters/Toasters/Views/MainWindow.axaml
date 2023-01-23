@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Toasters.Views"
         mc:Ignorable="d" d:DesignWidth="512" d:DesignHeight="342"
+        Width="512" Height="342"
         x:Class="Toasters.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Toasters">

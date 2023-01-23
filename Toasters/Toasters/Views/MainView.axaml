@@ -18,25 +18,25 @@
   </Design.DataContext>
     <Panel>
         <Panel.Styles>
-            <Style Selector="Image.WingLow1">
+            <Style Selector="Image.WingSlow1">
                 <Setter Property="Source" Value="/Assets/flyingtoasterframes-002.png"/>
             </Style>
-            <Style Selector="Image.WingLow2">
+            <Style Selector="Image.WingSlow2">
                 <Setter Property="Source" Value="/Assets/flyingtoasterframes-004.png"/>
             </Style>
-            <Style Selector="Image.WingHigh1">
+            <Style Selector="Image.WingFast1">
                 <Setter Property="Source" Value="/Assets/flyingtoasterframes-001.png"/>
             </Style>
-            <Style Selector="Image.WingHigh2">
+            <Style Selector="Image.WingFast2">
                 <Setter Property="Source" Value="/Assets/flyingtoasterframes-003.png"/>
             </Style>
-            <Style Selector="Image.Toast">
+            <Style Selector="Image.Bread">
                 <Setter Property="Source" Value="/Assets/flyingtoasterframes-005.png"/>
             </Style>
             
         </Panel.Styles>
          
-        <ItemsControl Items="{Binding Toasters}">
+        <ItemsControl Items="{Binding FlyingObjects}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -44,17 +44,22 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerTheme>
                 <ControlTheme TargetType="{x:Type ContentPresenter}" x:DataType="viewModels:FlyingObjectsViewModel">
-                    <Setter Property="Canvas.Left" Value="{Binding Position.X}"></Setter>
-                    <Setter Property="Canvas.Top" Value="{Binding Position.Y}"></Setter>
+                    <Setter Property="Canvas.Left" Value="{Binding Location.X}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Location.Y}"></Setter>
                     <Setter Property="Width" Value="{Binding Size.Width}"></Setter>
                     <Setter Property="Height" Value="{Binding Size.Height}"></Setter>
                 </ControlTheme>
             </ItemsControl.ItemContainerTheme>
             <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="viewModels:ToasterViewModel">
-                    <Image>
-                        <Interaction.Behaviors><behaviors:ToasterFrameBehavior TargetViewModel="{Binding .}"/></Interaction.Behaviors>
-                    </Image>
+                <DataTemplate x:DataType="viewModels:FlyingObjectsViewModel">
+                    <Border BorderBrush="Red" BorderThickness="1">
+                        
+                        <Image>
+                            <Interaction.Behaviors>
+                                <behaviors:FlyingObjectFrameBehavior TargetViewModel="{Binding .}"/>
+                            </Interaction.Behaviors>
+                        </Image>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
