@@ -42,8 +42,8 @@ namespace Toasters.ViewModels
                 _heightGrid = (int)Math.Round(_viewBounds.Height / 64f);
 
                 // When the flying objects are out of view, they must not respawn on the active view.
-                _excludedPositions = Enumerable.Range(0, _heightGrid)
-                    .SelectMany(y => Enumerable.Range(0, _widthGrid).Select(x => (x, y))).ToList();
+                _excludedPositions = Enumerable.Range(0, _heightGrid + 1)
+                    .SelectMany(y => Enumerable.Range(0, _widthGrid + 1).Select(x => (x, y))).ToList();
 
                 // Select random positions with flexible probability from the square grid indices.
                 var potentialPositions = Enumerable.Range(1, _heightGrid - 2)
