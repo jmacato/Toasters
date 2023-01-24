@@ -44,9 +44,16 @@ namespace Toasters.ViewModels
                     .SelectMany(y => Enumerable.Range(0, _widthGrid + 1).Select(x => (x, y))).ToList();
 
                 // Select random positions with flexible probability from the square grid indices.
-                var potentialPositions = Enumerable.Range(1, _heightGrid - 2)
-                    .SelectMany(y => Enumerable.Range(1, _widthGrid - 2).Select(x => (x, y)))
-                    .Where(_ => Random.Shared.NextDouble() <= 0.4)
+                var potentialPositions =  
+                    
+                Enumerable.Range(1, 3)
+                    .Select(x => -x)
+                    .Concat(Enumerable.Range(0, _heightGrid))
+                    .SelectMany(y =>
+                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 3)
+                            .Select(x => (x, y)))
+                    .Where(x => !_excludedPositions.Contains(x))
+                    .Where(_ => Random.Shared.NextDouble() <= 0.3)
                     .Distinct()
                     .Select(w => new Vector(w.x, w.y) * 64);
 
@@ -84,7 +91,7 @@ namespace Toasters.ViewModels
                     .Select(x => -x)
                     .Concat(Enumerable.Range(0, _heightGrid))
                     .SelectMany(y =>
-                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 5)
+                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 3)
                             .Select(x => (x, y)))
                     .Where(x => !_excludedPositions.Contains(x))
                     .OrderBy(_ => Random.Shared.NextDouble())
