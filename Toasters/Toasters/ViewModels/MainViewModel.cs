@@ -83,8 +83,8 @@ namespace Toasters.ViewModels
                 attempt--;
 
 
-                var potentialPosition = Enumerable.Range(1, 5).Select(x => -x).Concat(Enumerable.Range(0, _heightGrid))
-                    .SelectMany(y => Enumerable.Range(0, _widthGrid + 5).Select(x => (x, y)))
+                var potentialPosition = Enumerable.Range(1, 3).Select(x => -x).Concat(Enumerable.Range(0, _heightGrid))
+                    .SelectMany(y => Enumerable.Range(Random.Shared.Next(0, (int)Math.Round((decimal)(_widthGrid/2))), _widthGrid + 5).Select(x => (x, y)))
                     .Where(x => !_excludedPositions.Contains(x))
                     .OrderBy(_ => Random.Shared.NextDouble())
                     .Select(w => new Vector(w.x, w.y) * 64)
