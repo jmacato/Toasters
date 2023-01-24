@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasters.Web", "Toasters\To
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasters.iOS", "Toasters\Toasters.iOS\Toasters.iOS.csproj", "{E9AEB782-D28D-4F13-B4B2-862268DB8081}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasters.RPi", "Toasters\Toasters.RPi\Toasters.RPi.csproj", "{40A1617D-63A7-433A-B671-24D45E5517ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +42,9 @@ Global
 		{E9AEB782-D28D-4F13-B4B2-862268DB8081}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9AEB782-D28D-4F13-B4B2-862268DB8081}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9AEB782-D28D-4F13-B4B2-862268DB8081}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{40A1617D-63A7-433A-B671-24D45E5517ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A1617D-63A7-433A-B671-24D45E5517ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A1617D-63A7-433A-B671-24D45E5517ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A1617D-63A7-433A-B671-24D45E5517ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
