@@ -22,9 +22,9 @@ public class QuadTree
     /// <param name="obj"></param>
     public delegate void QtAction(QuadTreeNode obj);
 
-    public int NodeCapacity => 5;
+    public int NodeCapacity => 4;
 
-    public int MinNodeSize => 10;
+    public int MinNodeSize => 4;
 
     /// <summary>
     /// 

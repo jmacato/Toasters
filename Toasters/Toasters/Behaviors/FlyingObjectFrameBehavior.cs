@@ -16,7 +16,7 @@ public class FlyingObjectFrameBehavior : ViewModelBehaviors<FlyingObjectsViewMod
             {
                 if (AssociatedObject is null || x is null) return;
 
-                PropertyChangedExtensions.WhenAnyValue<FlyingObjectsViewModel, FlyingObjectsViewModel.FlyingObjectState>(x, z => z.State).Subscribe(y =>
+                x.WhenAnyValue(z => z.State).Subscribe(y =>
                 {
                     AssociatedObject.Classes.Clear();
                     AssociatedObject.Classes.Add(x.State.ToString());

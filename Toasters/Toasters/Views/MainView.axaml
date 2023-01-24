@@ -11,35 +11,33 @@
              x:CompileBindings="True" x:DataType="viewModels:MainViewModel"
              Background="Black">
     <Interaction.Behaviors>
-        <behaviors:BoundsBehavior TargetViewModel="{Binding .}"/>
+        <behaviors:BoundsBehavior TargetViewModel="{Binding .}" />
     </Interaction.Behaviors>
     <Design.DataContext>
-    <viewModels:MainViewModel />
-  </Design.DataContext>
-    <Panel>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+    <DockPanel LastChildFill="True">
         <Panel.Styles>
             <Style Selector="Image.WingSlow1">
-                <Setter Property="Source" Value="/Assets/flyingtoasterframes-002.png"/>
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-002.png" />
             </Style>
             <Style Selector="Image.WingSlow2">
-                <Setter Property="Source" Value="/Assets/flyingtoasterframes-004.png"/>
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-004.png" />
             </Style>
             <Style Selector="Image.WingFast1">
-                <Setter Property="Source" Value="/Assets/flyingtoasterframes-001.png"/>
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-001.png" />
             </Style>
             <Style Selector="Image.WingFast2">
-                <Setter Property="Source" Value="/Assets/flyingtoasterframes-003.png"/>
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-003.png" />
             </Style>
             <Style Selector="Image.Bread">
-                <Setter Property="Source" Value="/Assets/flyingtoasterframes-005.png"/>
+                <Setter Property="Source" Value="/Assets/flyingtoasterframes-005.png" />
             </Style>
-            
         </Panel.Styles>
-         
         <ItemsControl Items="{Binding FlyingObjects}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas/>
+                    <Canvas />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerTheme>
@@ -52,14 +50,13 @@
             </ItemsControl.ItemContainerTheme>
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="viewModels:FlyingObjectsViewModel">
-                         <Image>
-                            <Interaction.Behaviors>
-                                <behaviors:FlyingObjectFrameBehavior TargetViewModel="{Binding .}"/>
-                            </Interaction.Behaviors>
-                        </Image>
-                 </DataTemplate>
+                    <Image>
+                        <Interaction.Behaviors>
+                            <behaviors:FlyingObjectFrameBehavior TargetViewModel="{Binding .}" />
+                        </Interaction.Behaviors>
+                    </Image>
+                </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-    </Panel>
+    </DockPanel>
 </UserControl>

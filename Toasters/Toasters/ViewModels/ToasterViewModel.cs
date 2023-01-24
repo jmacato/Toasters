@@ -1,23 +1,22 @@
 using System;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Toasters.Models;
 
 namespace Toasters.ViewModels;
 
 public class ToasterViewModel : FlyingObjectsViewModel
 {
-    private readonly Vector _velocity = new(-1, 1);
-
-    public ToasterViewModel(MainViewModel mainViewModel, Vector position) : base(mainViewModel.Tree,
-        TimeSpan.FromMilliseconds(20), position, new Size(64, 64))
+    public ToasterViewModel(MainViewModel mainViewModel, Vector position) : base(mainViewModel,
+        TimeSpan.FromMilliseconds(20), position, new Size(64, 64), new(-1, 1))
     {
     }
 
     private int _animationTickCount, _fastSlowTimeOutTickCount, _fastSlowTimeOut = 40;
     private bool _isFast, _highState, _lowState;
 
-    public override void Tick()
+    protected override void Tick()
     {
         if (_fastSlowTimeOutTickCount >= _fastSlowTimeOut)
         {
@@ -26,21 +25,7 @@ public class ToasterViewModel : FlyingObjectsViewModel
             _fastSlowTimeOut = Random.Shared.Next(3, 8) * 10;
         }
 
-        var curVelocity = _isFast ? _velocity * 2 : _velocity;
-
-        Location += curVelocity;
-
-        if (Tree.Query(this).Count() > 1)
-        {
-            Location -= curVelocity;
-
-            Location += new Vector(0, curVelocity.Y);
-
-            if (Tree.Query(this).Count() > 1)
-            {
-                Location -= new Vector(0, curVelocity.Y);
-            }
-        }
+        Velocity = _isFast ? new Vector(-2, 2) : new Vector(-1, 1);
 
         if (_animationTickCount >= (_isFast ? 5 : 10))
         {
@@ -60,7 +45,5 @@ public class ToasterViewModel : FlyingObjectsViewModel
 
         _animationTickCount++;
         _fastSlowTimeOutTickCount++;
-
-        Tree.Update(this);
     }
 }
