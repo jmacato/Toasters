@@ -64,7 +64,7 @@ public abstract partial class FlyingObjectsViewModel : RectangleViewModel, IDisp
                 }
             }
 
-            if (!_mainViewModel.ViewBoundsRect.IntersectsWith(this))
+            if (Location.X < 0 && Location.Y >= _mainViewModel.ViewBounds.Height)
             {
                 _mainViewModel.ObjectOutOfBounds(this);
                 return;
