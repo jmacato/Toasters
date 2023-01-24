@@ -14,9 +14,7 @@ namespace Toasters.ViewModels
         private int _widthGrid;
         private int _heightGrid;
         private List<(int x, int y)> _excludedPositions = null!;
-
-        public RectangleViewModel ViewBoundsRect => new(0, 0, _viewBounds.Width, _viewBounds.Height);
-
+        
         public QuadTree? Tree { get; private set; }
         public ObservableCollection<FlyingObjectsViewModel> FlyingObjects { get; } = new();
 
@@ -76,15 +74,18 @@ namespace Toasters.ViewModels
         public void ObjectOutOfBounds(FlyingObjectsViewModel flyingObject)
         {
             if (Tree is null) return;
-
             var attempt = 10;
+            Vector potentialPosition;
             do
             {
                 attempt--;
 
-
-                var potentialPosition = Enumerable.Range(1, 3).Select(x => -x).Concat(Enumerable.Range(0, _heightGrid))
-                    .SelectMany(y => Enumerable.Range(Random.Shared.Next(0, (int)Math.Round((decimal)(_widthGrid/2))), _widthGrid + 5).Select(x => (x, y)))
+                potentialPosition = Enumerable.Range(1, 3)
+                    .Select(x => -x)
+                    .Concat(Enumerable.Range(0, _heightGrid))
+                    .SelectMany(y =>
+                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 5)
+                            .Select(x => (x, y)))
                     .Where(x => !_excludedPositions.Contains(x))
                     .OrderBy(_ => Random.Shared.NextDouble())
                     .Select(w => new Vector(w.x, w.y) * 64)
@@ -92,14 +93,12 @@ namespace Toasters.ViewModels
 
                 if (Tree.Query(new RectangleViewModel(potentialPosition.X, potentialPosition.Y, 64, 64)).Any())
                     continue;
-
-                flyingObject.Location = potentialPosition;
-                Tree.Update(flyingObject);
-                return;
+                break;
             } while (attempt > 0);
-
             FlyingObjects.Remove(flyingObject);
             flyingObject.Dispose();
+            
+            GenerateFlyingObject(potentialPosition);
         }
     }
 }
