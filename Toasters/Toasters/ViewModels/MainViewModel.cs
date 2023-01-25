@@ -13,8 +13,8 @@ namespace Toasters.ViewModels
         [ObservableProperty] private Size _viewBounds;
         private int _widthGrid;
         private int _heightGrid;
-        private List<(int x, int y)> _excludedPositions = null!;
-        
+        private List<(int x, int y)> _respawnPositions = null!;
+
         public QuadTree? Tree { get; private set; }
         public ObservableCollection<FlyingObjectsViewModel> FlyingObjects { get; } = new();
 
@@ -39,23 +39,24 @@ namespace Toasters.ViewModels
                 _widthGrid = (int)Math.Round(_viewBounds.Width / 64f);
                 _heightGrid = (int)Math.Round(_viewBounds.Height / 64f);
 
-                // When the flying objects are out of view, they must not respawn on the active view.
-                _excludedPositions = Enumerable.Range(0, _heightGrid + 1)
+                var excludedPositions = Enumerable.Range(0, _heightGrid + 1)
                     .SelectMany(y => Enumerable.Range(0, _widthGrid + 1).Select(x => (x, y))).ToList();
 
+                // When the flying objects are out of view, they must not respawn on the active view.
+                // so create grid indices that are outside of view.
+                _respawnPositions =
+                    Enumerable.Range(-3, _heightGrid + 3)
+                        .SelectMany(y =>
+                            Enumerable.Range(0, _widthGrid + 3)
+                                .Select(x => (x, y)))
+                        .Where(x => !excludedPositions.Contains(x))
+                        .ToList();
+
                 // Select random positions with flexible probability from the square grid indices.
-                var potentialPositions =  
-                    
-                Enumerable.Range(1, 3)
-                    .Select(x => -x)
-                    .Concat(Enumerable.Range(0, _heightGrid))
-                    .SelectMany(y =>
-                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 3)
-                            .Select(x => (x, y)))
-                    .Where(x => !_excludedPositions.Contains(x))
-                    .Where(_ => Random.Shared.NextDouble() <= 0.3)
-                    .Distinct()
-                    .Select(w => new Vector(w.x, w.y) * 64);
+                var potentialPositions =
+                    _respawnPositions
+                        .Where(_ => Random.Shared.NextDouble() <= 0.4)
+                        .Select(w => new Vector(w.x, w.y) * 64);
 
                 foreach (var pos in potentialPositions)
                 {
@@ -82,30 +83,25 @@ namespace Toasters.ViewModels
         {
             if (Tree is null) return;
             var attempt = 10;
-            Vector potentialPosition;
             do
             {
                 attempt--;
 
-                potentialPosition = Enumerable.Range(1, 3)
-                    .Select(x => -x)
-                    .Concat(Enumerable.Range(0, _heightGrid))
-                    .SelectMany(y =>
-                        Enumerable.Range(Random.Shared.Next(0, (int)Math.Round(_widthGrid / 2d)), _widthGrid + 3)
-                            .Select(x => (x, y)))
-                    .Where(x => !_excludedPositions.Contains(x))
-                    .OrderBy(_ => Random.Shared.NextDouble())
-                    .Select(w => new Vector(w.x, w.y) * 64)
-                    .First();
+                var potentialPosition = _respawnPositions
+                    .ElementAt(Random.Shared.Next(_respawnPositions.Count));
 
-                if (Tree.Query(new RectangleViewModel(potentialPosition.X, potentialPosition.Y, 64, 64)).Any())
+                if (Tree.Query(new RectangleViewModel(potentialPosition.x * 64, potentialPosition.y * 64, 64, 64))
+                    .Any())
                     continue;
+
+
+                FlyingObjects.Remove(flyingObject);
+                flyingObject.Dispose();
+
+                GenerateFlyingObject(new Vector(potentialPosition.x * 64, potentialPosition.y * 64));
+
                 break;
             } while (attempt > 0);
-            FlyingObjects.Remove(flyingObject);
-            flyingObject.Dispose();
-            
-            GenerateFlyingObject(potentialPosition);
         }
     }
 }
