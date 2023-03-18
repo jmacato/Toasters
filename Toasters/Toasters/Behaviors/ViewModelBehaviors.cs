@@ -5,7 +5,7 @@ using Toasters.ViewModels;
 namespace Toasters.Behaviors;
 
 public abstract class ViewModelBehaviors<TViewModel, TControl> : DisposingBehavior<TControl>
-    where TControl : class, IAvaloniaObject
+    where TControl :  AvaloniaObject
     where TViewModel : ViewModelBase
 {
     private TViewModel? _targetViewModel;

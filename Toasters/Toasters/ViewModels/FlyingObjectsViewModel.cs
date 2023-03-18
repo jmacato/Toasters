@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ReactiveUI;
 using Toasters.Models;
 using Vector = Toasters.Models.Vector;
 
@@ -39,7 +40,7 @@ public abstract partial class FlyingObjectsViewModel : RectangleViewModel, IDisp
         Velocity = velocity;
         _tree = mainViewModel.Tree;
         _tree.Insert(this);
-        _disposable = Observable.Interval(interval).ObserveOn(AvaloniaScheduler.Instance).Subscribe(HandleTick);
+        _disposable = Observable.Interval(interval).ObserveOn(RxApp.MainThreadScheduler).Subscribe(HandleTick);
     }
 
     private void HandleTick(long _)
